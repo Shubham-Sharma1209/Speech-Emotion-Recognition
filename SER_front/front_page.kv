@@ -1,0 +1,56 @@
+MainWidget:
+
+
+<MainWidget>:
+    orientation:"lr-tb"
+    canvas.before:
+        Color:
+            rgba:0.5,0.7,0.8,0.5
+        Rectangle:
+            size:self.size
+            # source:'mic-logo-1.png'
+    Label:
+        text:"Speech Emotion Recognition System"
+        size:"130dp","140dp"
+        pos: "320dp","500dp"
+        font_size: "40dp"
+        color:1,0.8,0.4,1
+        spacing: "50dp","50dp","50dp","0dp"
+    Button:
+        text:"Mic"
+        background_color: 0,0.87,0.5,1
+        # background_normal:'mic-logo-1.png'
+        # size_hint:0.2,0.2
+        size:"40dp","40dp"
+        pos:"150dp","460dp"
+    Label:
+        text:"or"
+        size:"40dp","40dp"
+        pos:"200dp","460dp"
+    Button:
+        text:"Select an audio file"
+        size:"160dp","40dp"
+        on_press:root.display_add()
+        pos:"250dp","460dp"
+    TextInput:
+        text:root.addr
+        size_hint: 0.5,0.5
+        size:"220dp","40dp"
+        pos: "420dp","460dp"
+        disabled:True
+    Button:
+        text: 'Check Emotion'
+        size: "160dp","80dp"
+        pos:"200dp","80dp"
+        on_press:root.emo()
+    Button:
+        id:"Exit_btn"
+        text:"Exit"
+        on_press:app.stop()
+        size:"160dp","80dp"
+        pos:"440dp","80dp"
+    Label:
+        text:root.Show_Emo
+        pos:"350dp","350dp"
+        size:"60dp","100dp"
+        
