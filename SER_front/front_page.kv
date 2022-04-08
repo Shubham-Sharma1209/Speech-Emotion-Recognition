@@ -5,22 +5,26 @@ MainWidget:
     orientation:"lr-tb"
     canvas.before:
         Color:
-            rgba:0.5,0.7,0.8,0.5
+            rgba:0.5,0.6,0.8,0.3
         Rectangle:
-            size:self.size
-            # source:'mic-logo-1.png'
+            size:root.width, root.height
+            pos: self.pos
+            source:'background_2.jpeg'
     Label:
-        text:"Speech Emotion Recognition System"
+        text:"Speech Emotion Recognition System"    
         size:"130dp","140dp"
-        pos: "320dp","500dp"
+        pos: "330dp","500dp"
+        font_name: 'Georgia'
         font_size: "40dp"
-        color:1,0.8,0.4,1
+        color:0,0.8,0.3,0.8
         spacing: "50dp","50dp","50dp","0dp"
     Button:
         text:"Mic"
         background_color: 0,0.87,0.5,1
-        # background_normal:'mic-logo-1.png'
-        # size_hint:0.2,0.2
+        # Rectangle:
+        #     pos:self.pos
+            
+            # size_hint:0.2,0.2
         size:"40dp","40dp"
         pos:"150dp","460dp"
     Label:

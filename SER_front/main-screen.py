@@ -1,15 +1,19 @@
+from turtle import Screen
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.properties import StringProperty
-from kivy.properties import BooleanProperty
 from kivy.config import Config
 from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
 from kivy.graphics import Rectangle,Color
+from kivy.lang import Builder
+from kivy.core.text import LabelBase
+
 
 Config.set('graphics','resizable',True)
+
 class BoxLayoutExample(BoxLayout):
     pass
         
@@ -31,4 +35,7 @@ class MainWidget(Widget):
 
 class front_pageApp(App):
     pass
+
+LabelBase.register(name='Georgia',fn_regular='Georgia Regular font.ttf')
+Builder.load_file('front_page.kv')
 front_pageApp().run()
