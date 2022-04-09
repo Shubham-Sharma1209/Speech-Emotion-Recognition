@@ -16,32 +16,29 @@ MainWidget:
         pos: "330dp","500dp"
         font_name: 'Georgia'
         font_size: "40dp"
-        color:0,0.8,0.3,0.8
+        color:0.1,0.8,0.3,0.8
         spacing: "50dp","50dp","50dp","0dp"
-    Button:
-        text:"Mic"
-        background_color: 0,0.87,0.5,1
-        # Rectangle:
-        #     pos:self.pos
-            
-            # size_hint:0.2,0.2
-        size:"40dp","40dp"
-        pos:"150dp","460dp"
-    Label:
-        text:"or"
-        size:"40dp","40dp"
-        pos:"200dp","460dp"
+
     Button:
         text:"Select an audio file"
-        size:"160dp","40dp"
+        size:"200dp","40dp"
         on_press:root.display_add()
-        pos:"250dp","460dp"
+        pos:"170dp","460dp"
+        font_name:'Georgia'
+        font_size:'20dp'
+
     TextInput:
         text:root.addr
         size_hint: 0.5,0.5
-        size:"220dp","40dp"
+        size:"200dp","40dp"
         pos: "420dp","460dp"
         disabled:True
+    Button:
+        text:"Speak"
+        background_color: 0.5,0.5,0.8,0.7
+        size:"80dp","50dp"
+        pos:"350dp","360dp"
+
     Button:
         text: 'Check Emotion'
         size: "160dp","80dp"
@@ -55,6 +52,30 @@ MainWidget:
         pos:"440dp","80dp"
     Label:
         text:root.Show_Emo
-        pos:"350dp","350dp"
+        pos:"360dp","150dp"
         size:"60dp","100dp"
         
+<Filechooser>:
+	label: label
+	orientation: 'vertical'
+
+	FloatLayout:
+		FileChooserIconView:
+			canvas.before:
+				Color:
+					rgb: .6, .1, .8
+				Rectangle:
+					pos: self.pos
+					size: root.width,root.height
+			on_selection: root.select(*args)
+
+	Button:
+		id: label
+		size_hint_y: .1
+		canvas.before:
+			Color:
+				rgb: .5, .5, .4
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
