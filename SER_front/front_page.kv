@@ -1,81 +1,79 @@
-MainWidget:
+Main_screen
 
 
-<MainWidget>:
-    orientation:"lr-tb"
+<Main_screen>:
+    orientation: 'vertical'
+    size:root.width,root.height
+    font_name:'Georgia'
     canvas.before:
         Color:
-            rgba:0.5,0.6,0.8,0.3
+            rgba:0.1,0.1,0.7,0.5
         Rectangle:
             size:root.width, root.height
             pos: self.pos
             source:'background_2.jpeg'
-    Label:
-        text:"Speech Emotion Recognition System"    
-        size:"130dp","140dp"
-        pos: "330dp","500dp"
-        font_name: 'Georgia'
-        font_size: "40dp"
-        color:0.1,0.8,0.3,0.8
-        spacing: "50dp","50dp","50dp","0dp"
+    FloatLayout:
+        Label:
+            font_name: 'Georgia Bold'
+            text:'Speech Emotion Recognition'
+            font_size: '25dp'
+            pos_hint:{"x":0,"y":0.45}
+        Button:
+            text:'Select an audio file'
+            font_size: '22dp'
+            size_hint: 0.25,0.07
+            pos_hint: {"x":0.2,"y":0.75}
+            on_press: root.call_adrr()
+            canvas:
+                Color: 
+                    rgba: 0.8,0.3,0.3,0.8
+                RoundedRectangle:
+                    size:self.size
+                    pos:self.pos
+                    radius: 25,0,0,25
+        TextInput:
+            id: text_input_address
+            text:root.file_path
+            font_size: '16dp'
+            diabled: True
+            size_hint: 0.25,0.07
+            pos_hint: {"x":0.53,"y":0.75}
+        Button:
+            text: 'Speak'
+            size_hint:0.1,0.07
+            pos_hint:{"x":0.45,"y":0.65}
+        Button:
+            text:'Check'
+            size_hint:0.2,0.07
+            pos_hint:{'x':0.25,'y':0.2}
+            # on_press:self.show_emo()
 
-    Button:
-        text:"Select an audio file"
-        size:"200dp","40dp"
-        on_press:root.display_add()
-        pos:"170dp","460dp"
-        font_name:'Georgia'
-        font_size:'20dp'
+        Button:
+            text: 'Exit'
+            size_hint:0.2,0.07
+            pos_hint:{'x':0.55,'y':0.2}
+            on_press:app.stop()
 
-    TextInput:
-        text:root.addr
-        size_hint: 0.5,0.5
-        size:"200dp","40dp"
-        pos: "420dp","460dp"
-        disabled:True
-    Button:
-        text:"Speak"
-        background_color: 0.5,0.5,0.8,0.7
-        size:"80dp","50dp"
-        pos:"350dp","360dp"
+<FileChoosePopup>:
+    title: "Choose a sound File"
+    size_hint: .9, .9
+    auto_dismiss: False
 
-    Button:
-        text: 'Check Emotion'
-        size: "160dp","80dp"
-        pos:"200dp","80dp"
-        on_press:root.emo()
-    Button:
-        id:"Exit_btn"
-        text:"Exit"
-        on_press:app.stop()
-        size:"160dp","80dp"
-        pos:"440dp","80dp"
-    Label:
-        text:root.Show_Emo
-        pos:"360dp","150dp"
-        size:"60dp","100dp"
-        
-<Filechooser>:
-	label: label
-	orientation: 'vertical'
+    BoxLayout:
+        orientation: "vertical"
+        FileChooser:
+            id: filechooser
+            FileChooserIconLayout
 
-	FloatLayout:
-		FileChooserIconView:
-			canvas.before:
-				Color:
-					rgb: .6, .1, .8
-				Rectangle:
-					pos: self.pos
-					size: root.width,root.height
-			on_selection: root.select(*args)
-
-	Button:
-		id: label
-		size_hint_y: .1
-		canvas.before:
-			Color:
-				rgb: .5, .5, .4
-			Rectangle:
-				pos: self.pos
-				size: self.size
-
+        BoxLayout:
+            size_hint: (1, 0.1)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: 20
+            Button:
+                text: "Cancel"
+                on_release: root.dismiss()
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.selection)
+                id: ldbtn
+                disabled: True if filechooser.selection==[] else False
