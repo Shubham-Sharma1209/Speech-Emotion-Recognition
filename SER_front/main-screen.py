@@ -1,34 +1,47 @@
 from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.properties import StringProperty
-from kivy.properties import BooleanProperty
+from kivy.uix.floatlayout import FloatLayout
+from kivy.lang.builder import Builder 
 from kivy.config import Config
-from kivy.uix.textinput import TextInput
-from kivy.metrics import dp
-from kivy.graphics import Rectangle,Color
+from kivy.properties import StringProperty,ObjectProperty
+from kivy.core.text import LabelBase    
+from kivy.uix.popup import Popup
+from kivy.core.window import Window
 
+Window.size=(600,600)
 Config.set('graphics','resizable',True)
-class BoxLayoutExample(BoxLayout):
-    pass
+
+
+class Main_screen(FloatLayout):
+    file_path=StringProperty('Currently No files')
+
+    def call_adrr(self):
+        try:
+            self.the_popup = FileChoosePopup(load=self.load)
+            self.the_popup.open()
+        except:
+            self.file_path='Cannot Select files'
         
-    
-class MainWidget(Widget):
-    addr=StringProperty()
-    Show_Emo=StringProperty()
-    Show_Emo="NO EMOTION"
-    addr=""+"NO FILE SELECTED"
-    def display_add(self):
-        self.addr="Cannot locate files"
-        x=TextInput(text=self.addr,size_hint=(0.5,0.5),size=(dp(220),dp(40)),disabled=True,pos=(dp(420),dp(460)))
-        self.add_widget(x)
-        
+
+    def load(self, selection):
+        self.file_path = str(selection[0])
+        self.the_popup.dismiss()
+
     def emo(self):
         self.Show_Emo="Cant detect emotion: No files"
-        # return self.Show_Emo
+        return self.Show_Emo
 
 
-class front_pageApp(App):
-    pass
-front_pageApp().run()
+class FileChoosePopup(Popup):
+    load = ObjectProperty()
+
+
+class SER(App):
+    def build(self):
+        return Main_screen()
+    
+LabelBase.register(name='Georgia',fn_regular='Georgia Regular font.ttf')
+LabelBase.register(name='Georgia Bold',fn_regular='georgia bold.ttf')    
+Builder.load_file('front_page.kv')
+if __name__=='__main__':
+    SER().run()
+
