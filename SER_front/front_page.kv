@@ -1,33 +1,20 @@
 Main_screen
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
 <Main_screen>:
     orientation: 'vertical'
     size:root.width,root.height
     font_name:'Georgia'
     canvas.before:
         Color:
-<<<<<<< HEAD
             # rgba:0.1,0.1,0.7,0.5
         Rectangle:
             size:root.width, root.height
             pos: self.pos
             source:'background-3.jpg'
-=======
-            rgba:0.1,0.1,0.7,0.5
-        Rectangle:
-            size:root.width, root.height
-            pos: self.pos
-            source:'background_2.jpeg'
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
     FloatLayout:
         Label:
             font_name: 'Georgia Bold'
             text:'Speech Emotion Recognition'
-<<<<<<< HEAD
             font_size: '28dp'
             pos_hint:{"x":0,"y":0.4}
         Button:
@@ -39,43 +26,17 @@ Main_screen
             canvas.after:
                 Color: 
                     rgba: 0.5,1,0.1,1
-=======
-            font_size: '25dp'
-            pos_hint:{"x":0,"y":0.45}
-        Button:
-            text:'Select an audio file'
-            font_size: '22dp'
-            size_hint: 0.25,0.07
-            pos_hint: {"x":0.2,"y":0.75}
-            on_press: root.call_adrr()
-            canvas:
-                Color: 
-                    rgba: 0.8,0.3,0.3,0.8
-                RoundedRectangle:
-                    size:self.size
-                    pos:self.pos
-                    radius: 25,0,0,25
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
         TextInput:
             id: text_input_address
             text:root.file_path
             font_size: '16dp'
             diabled: True
-<<<<<<< HEAD
             size_hint: 0.3,0.08
             pos_hint: {"x":0.53,"y":0.7}
         Button:
             text: 'Speak'
             size_hint:0.1,0.07
             pos_hint:{"x":0.45,"y":0.55}
-=======
-            size_hint: 0.25,0.07
-            pos_hint: {"x":0.53,"y":0.75}
-        Button:
-            text: 'Speak'
-            size_hint:0.1,0.07
-            pos_hint:{"x":0.45,"y":0.65}
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
         Button:
             text:'Check'
             size_hint:0.2,0.07
@@ -88,10 +49,6 @@ Main_screen
             pos_hint:{'x':0.55,'y':0.2}
             on_press:app.stop()
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
 <FileChoosePopup>:
     title: "Choose a sound File"
     size_hint: .9, .9
@@ -114,9 +71,5 @@ Main_screen
                 text: "Load"
                 on_release: root.load(filechooser.selection)
                 id: ldbtn
-<<<<<<< HEAD
                 disabled: True if filechooser.selection==[] else False
     
-=======
-                disabled: True if filechooser.selection==[] else False
->>>>>>> 0e433b9d7cb71c1f2c75439130b2ea43b36f5c8d
