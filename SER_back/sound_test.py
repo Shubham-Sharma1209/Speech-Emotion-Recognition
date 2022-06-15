@@ -1,9 +1,9 @@
 # import pyaudio
 # import wave
 # import pickle
-# # import librosa
-# # import sklearn
-# # from main import *
+# import librosa
+# import sklearn
+# from main import *
 # import soundfile,librosa,numpy
 # from sklearn.neural_network import MLPClassifier
 # from main import extract_feature
@@ -15,41 +15,41 @@
 # fs = 44100 
 # seconds = 10
 # filename='/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/sound(6).wav'
-# # with open('count.txt','r') as count:
-# #     temp=count.read()
-# #     filename = "sound("+str(int(temp)+1)+").wav"
-# # count =open('count.txt','w')
-# # count.write(str(int(temp)+1))
-# # count.close()
+# with open('count.txt','r') as count:
+#     temp=count.read()
+#     filename = "sound("+str(int(temp)+1)+").wav"
+# count =open('count.txt','w')
+# count.write(str(int(temp)+1))
+# count.close()
 
-# # p = pyaudio.PyAudio() 
+# p = pyaudio.PyAudio() 
 
-# # print('Recording')
+# print('Recording')
 
-# # stream = p.open(format=sample_format,
-# #                 channels=channels,
-# #                 rate=fs,
-# #                 frames_per_buffer=chunk,
-# #                 input=True)
+# stream = p.open(format=sample_format,
+#                 channels=channels,
+#                 rate=fs,
+#                 frames_per_buffer=chunk,
+#                 input=True)
 
-# # frames = []  
+# frames = []  
 
-# # for i in range(0, int(fs / chunk * seconds)):
-# #     data = stream.read(chunk)
-# #     frames.append(data)
+# for i in range(0, int(fs / chunk * seconds)):
+#     data = stream.read(chunk)
+#     frames.append(data)
 
-# # stream.stop_stream()
-# # stream.close()
-# # p.terminate()
+# stream.stop_stream()
+# stream.close()
+# p.terminate()
 
-# # print('Finished recording')
-# # # print(len(frames),len(frames[0]))
-# # wf = wave.open(filename, 'wb')
-# # wf.setnchannels(channels)
-# # wf.setsampwidth(p.get_sample_size(sample_format))
-# # wf.setframerate(fs)
-# # wf.writeframes(b''.join(frames))
-# # wf.close()
+# print('Finished recording')
+# # print(len(frames),len(frames[0]))
+# wf = wave.open(filename, 'wb')
+# wf.setnchannels(channels)
+# wf.setsampwidth(p.get_sample_size(sample_format))
+# wf.setframerate(fs)
+# wf.writeframes(b''.join(frames))
+# wf.close()
 
 # # with open('count.txt','r') as cnt:
 # feature=extract_feature(filename,True,True,True,True,True)
@@ -58,8 +58,7 @@
 # print(pred)
 
 
-
-import pickle  # to save model after training
+import pickle
 import wave
 from array import array
 from struct import pack
@@ -67,29 +66,18 @@ from sys import byteorder
 
 import librosa
 import numpy as np
+from pandas import read_clipboard
 import pyaudio
-import soundfile  # to read audio file
-# import speech_recognition as sr
+import soundfile
 
 
 def extract_feature(file_name, **kwargs):
-    """
-    Extract feature from audio file `file_name`
-        Features supported:
-            - MFCC (mfcc)
-            - Chroma (chroma)
-            - MEL Spectrogram Frequency (mel)
-            - Contrast (contrast)
-            - Tonnetz (tonnetz)
-        e.g:
-        `features = extract_feature(path, mel=True, mfcc=True)`
-    """
 
     mfcc = kwargs.get("mfcc")
     chroma = kwargs.get("chroma")
     mel = kwargs.get("mel")
-    contrast = kwargs.get("contrast")
-    tonnetz = kwargs.get("tonnetz")
+    # contrast = kwargs.get("contrast")
+    # tonnetz = kwargs.get("tonnetz")
     with soundfile.SoundFile(file_name) as sound_file:
         X = sound_file.read(dtype="float32")
         sample_rate = sound_file.samplerate
@@ -118,12 +106,10 @@ THRESHOLD = 500
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
 RATE = 16000
-
 SILENCE = 30
 
 def is_silent(snd_data):
     return max(snd_data) < THRESHOLD
-
 
 def normalize(snd_data):
     MAXIMUM = 16384
@@ -198,7 +184,6 @@ def record(seconds=10):
 
 
 def record_to_file(path):
-# "Records from the microphone and outputs the resulting data to 'path'"
     sample_width, data = record(10)
     data = pack('<' + ('h' * len(data)), *data)
 
@@ -209,23 +194,20 @@ def record_to_file(path):
     wf.writeframes(data)
     wf.close()
 
-
-#if __name__ == "__main__":
-#def int():
-    # load the saved model (after training)
-loaded_model = pickle.load(open("Saved_model.model", 'rb'))
-
+loaded_model = pickle.load(open("/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/Saved_model.model", 'rb'))
 print("Please talk")
-filename = "sound(7).wav"
-a = filename
-record_to_file(filename)
+with open('count.txt=','r') as count:
+    temp=count.read()
+    filename = "/home/sharmaji/Programs linux/git/Sound files/sound("+str(int(temp)+1)+").wav"
+count =open('count.txt','w')
+count.write(str(int(temp)+1))
+count.close()
 
+# filename = "sound(7).wav"
+try:
+    record_to_file(filename)
+except:
+    record_to_file("sound("+str(int(temp)+1)+").wav")
 features = extract_feature(filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
-# predict
 result = loaded_model.predict(features)[0]
-# show the result !
-Emotion= ("Predicted Emotion is : ", result)
-print(Emotion)
-# recognize (convert from speech to text)
-# text = mic.recognize_google(audio_data)
-# print(text)
+print(("Predicted Emotion is : ", result))
