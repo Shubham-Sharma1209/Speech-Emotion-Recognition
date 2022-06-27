@@ -58,6 +58,8 @@
 # print(pred)
 
 
+
+
 import pickle
 import wave
 from array import array
@@ -66,7 +68,6 @@ from sys import byteorder
 
 import librosa
 import numpy as np
-from pandas import read_clipboard
 import pyaudio
 import soundfile
 
@@ -105,7 +106,7 @@ def extract_feature(file_name, **kwargs):
 THRESHOLD = 500
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
-RATE = 16000
+RATE = 48000
 SILENCE = 30
 
 def is_silent(snd_data):
@@ -122,7 +123,7 @@ def normalize(snd_data):
 
 
 def trim(snd_data):
-    def _trim(snd_data):
+    def _trim(snd_data):    
         snd_started = False
         r = array('h')
         for i in snd_data:
@@ -196,9 +197,9 @@ def record_to_file(path):
 
 loaded_model = pickle.load(open("/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/Saved_model.model", 'rb'))
 print("Please talk")
-with open('count.txt=','r') as count:
+with open('count.txt','r') as count:
     temp=count.read()
-    filename = "/home/sharmaji/Programs linux/git/Sound files/sound("+str(int(temp)+1)+").wav"
+    filename = "/home/sharmaji/Programs linux/git/Audio Sounds/sound("+str(int(temp)+1)+").wav"
 count =open('count.txt','w')
 count.write(str(int(temp)+1))
 count.close()
@@ -210,4 +211,4 @@ except:
     record_to_file("sound("+str(int(temp)+1)+").wav")
 features = extract_feature(filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
 result = loaded_model.predict(features)[0]
-print(("Predicted Emotion is : ", result))
+print(("Predicted Emotion is : ", result))  

@@ -16,6 +16,7 @@ def extract_feature(file_name, mfcc, chroma, mel):
             stft=np.abs(librosa.stft(X))
         result=np.array([])
         if mfcc:
+
             mfccs=np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=40).T, axis=0)
             result=np.hstack((result, mfccs))
         if chroma:
@@ -42,7 +43,7 @@ emotions = {
     '07':'disgust',
     '08':'surprised'
 }
-observed_emotions = ['calm', 'happy', 'fearful', 'disgust']
+observed_emotions = ['calm', 'happy', 'fearful', 'disgust','angry']
 
 def load_data(test_size = 0.2):
     x, y = [], []
