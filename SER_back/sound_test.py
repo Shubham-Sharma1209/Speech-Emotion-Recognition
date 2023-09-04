@@ -1,65 +1,9 @@
-# import pyaudio
-# import wave
-# import pickle
-# import librosa
-# import sklearn
-# from main import *
-# import soundfile,librosa,numpy
-# from sklearn.neural_network import MLPClassifier
-# from main import extract_feature
-
-
-# chunk = 1024  
-# sample_format = pyaudio.paInt16  
-# channels = 1
-# fs = 44100 
-# seconds = 10
-# filename='/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/sound(6).wav'
-# with open('count.txt','r') as count:
-#     temp=count.read()
-#     filename = "sound("+str(int(temp)+1)+").wav"
-# count =open('count.txt','w')
-# count.write(str(int(temp)+1))
-# count.close()
-
-# p = pyaudio.PyAudio() 
-
-# print('Recording')
-
-# stream = p.open(format=sample_format,
-#                 channels=channels,
-#                 rate=fs,
-#                 frames_per_buffer=chunk,
-#                 input=True)
-
-# frames = []  
-
-# for i in range(0, int(fs / chunk * seconds)):
-#     data = stream.read(chunk)
-#     frames.append(data)
-
-# stream.stop_stream()
-# stream.close()
-# p.terminate()
-
-# print('Finished recording')
-# # print(len(frames),len(frames[0]))
-# wf = wave.open(filename, 'wb')
-# wf.setnchannels(channels)
-# wf.setsampwidth(p.get_sample_size(sample_format))
-# wf.setframerate(fs)
-# wf.writeframes(b''.join(frames))
-# wf.close()
-
-# # with open('count.txt','r') as cnt:
-# feature=extract_feature(filename,True,True,True,True,True)
-# s_model=pickle.load('/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/Saved_model.model')
-# pred=s_model.predict(feature)
-# print(pred)
+import warnings
+warnings.filterwarnings("ignore")
 
 
 
-
+import os
 import pickle
 import wave
 from array import array
@@ -92,7 +36,7 @@ def extract_feature(file_name, **kwargs):
             chroma = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate).T, axis=0)
             result = np.hstack((result, chroma))
         if mel:
-            mel = np.mean(librosa.feature.melspectrogram(X, sr=sample_rate).T, axis=0)
+            mel = np.mean(librosa.feature.melspectrogram(y=X, sr=sample_rate).T, axis=0)
             result = np.hstack((result, mel))
         # if contrast:
         #     contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate).T, axis=0)
@@ -149,14 +93,23 @@ def add_silence(snd_data, seconds):
     return r
 
 
-def record(seconds=10):
+def record(seconds=5):
     p = pyaudio.PyAudio()
+    
+    print("----------------------record device list---------------------")
+    info = p.get_host_api_info_by_index(0)
+    numdevices = info.get('deviceCount')
+    for i in range(0, numdevices):
+            if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+                print("Input Device id ", i, " - ", p.get_device_info_by_host_api_device_index(0, i).get('name'))
+                # if 
     stream = p.open(format=FORMAT, channels=1, rate=RATE,
-                    input=True, output=True,
+                    input=True,input_device_index=2 if numdevices==3 else 0, output=True,
                     frames_per_buffer=CHUNK_SIZE)
     num_silent = 0
     snd_started = False
     r = array('h')
+    print("---------------------------------------RECORDING-----------------------------------")
     for i in range(int(RATE/CHUNK_SIZE*seconds)):
         snd_data = array('h', stream.read(CHUNK_SIZE))
         if byteorder == 'big':
@@ -195,20 +148,22 @@ def record_to_file(path):
     wf.writeframes(data)
     wf.close()
 
-loaded_model = pickle.load(open("/home/sharmaji/Programs linux/git/Speech-Emotion-Recognition/SER_back/Saved_model.model", 'rb'))
-print("Please talk")
+loaded_model = pickle.load(open("D:\Programming\git\Speech-Emotion-Recognition\SER_back\Saved_model.model", 'rb'))
+dir="D:\Programming\git\Audio Sounds\\"
 with open('count.txt','r') as count:
     temp=count.read()
-    filename = "/home/sharmaji/Programs linux/git/Audio Sounds/sound("+str(int(temp)+1)+").wav"
-count =open('count.txt','w')
+filename = str(int(temp)+1)+".wav"
+filepath=dir+filename
+count=open('count.txt','w')
 count.write(str(int(temp)+1))
 count.close()
 
-# filename = "sound(7).wav"
-try:
-    record_to_file(filename)
+try:    
+    record_to_file(filepath)
 except:
     record_to_file("sound("+str(int(temp)+1)+").wav")
-features = extract_feature(filename, mfcc=True, chroma=True, mel=True).reshape(1, -1)
+
+features = extract_feature(filepath, mfcc=True, chroma=True, mel=True).reshape(1, -1)
 result = loaded_model.predict(features)[0]
-print(("Predicted Emotion is : ", result))  
+print(("Predicted Emotion is : ", result))
+os.rename(filepath,dir+temp+"-"+result+".wav")
